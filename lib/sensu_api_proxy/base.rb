@@ -27,7 +27,7 @@ class SensuAPIProxy::Base < Sinatra::Base
 
     def halt_if_not_ok response
       code = response.code.to_i
-      halt code unless code == 200
+      halt code unless (200..209).include? code
     end
 
     def load_response response
@@ -38,6 +38,12 @@ class SensuAPIProxy::Base < Sinatra::Base
     def params_to_s hash
       return "" if hash.empty?
       hash.inject("?") {|string, (key, value)| string + "#{key}=#{value}&"}.chop
+    end
+
+    def pass_through response
+      status  response.code.to_i
+      headers response.header.to_hash
+      body    response.body
     end
   end
 
