@@ -24,6 +24,21 @@ class SensuAPIProxy::Base < Sinatra::Base
         yield http
       end
     end
+
+    def halt_if_not_ok response
+      code = response.code.to_i
+      halt code unless code == 200
+    end
+
+    def load_response response
+      halt_if_not_ok response
+      JSON.load response.body
+    end
+
+    def params_to_s hash
+      return "" if hash.empty?
+      hash.inject("?") {|string, (key, value)| string + "#{key}=#{value}&"}.chop
+    end
   end
 
   error do
