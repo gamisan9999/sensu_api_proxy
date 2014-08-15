@@ -4,11 +4,9 @@
 class SensuAPIProxy::Base
   get "/info" do
     begin
-      call_api do |http|
-        response = http.get "/info"
-        pass_through response
-        after_get_info response, load_response(response)
-      end
+      response = call_api {|http| http.get "/info"}
+      pass_through response
+      after_get_info response, load_response(response)
     rescue
       500
     end

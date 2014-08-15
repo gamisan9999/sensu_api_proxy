@@ -23,6 +23,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "sinatra"
   spec.add_dependency "sinatra-reloader"
+  spec.add_dependency "multi_json"
   spec.add_dependency "puma"
 
   spec.add_development_dependency "awesome_print"

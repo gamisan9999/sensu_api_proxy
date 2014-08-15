@@ -4,12 +4,10 @@
 class SensuAPIProxy::Base
   get "/clients" do
     begin
-      call_api do |http|
-        parameters = before_get_clients(params) || params
-        response   = http.get "/clients#{params_to_s parameters}"
-        pass_through response
-        after_get_clients response, load_response(response)
-      end
+      parameters = before_get_clients(params) || params
+      response   = call_api {|http| http.get "/clients#{params_to_s parameters}"}
+      pass_through response
+      after_get_clients response, load_response(response)
     rescue
       500
     end
@@ -23,11 +21,9 @@ class SensuAPIProxy::Base
 
   get "/clients/:client" do
     begin
-      call_api do |http|
-        response = http.get "/clients/#{params[:client]}"
-        pass_through response
-        after_get_clients_client response, load_response(response)
-      end
+      response = call_api {|http| http.get "/clients/#{params[:client]}"}
+      pass_through response
+      after_get_clients_client response, load_response(response)
     rescue
       500
     end
@@ -38,26 +34,22 @@ class SensuAPIProxy::Base
 
   delete "/clients/:client" do
     begin
-      call_api do |http|
-        response = http.delete "/clients/#{params[:client]}"
-        pass_through response
-        after_delete_clients_client response, load_response(response)
-      end
+      response = call_api {|http| http.delete "/clients/#{params[:client]}"}
+      pass_through response
+      after_delete_clients_client response
     rescue
       500
     end
   end
 
-  def after_delete_clients_client response, deletion
+  def after_delete_clients_client response
   end
 
   get "/clients/:client/history" do
     begin
-      call_api do |http|
-        response = http.get "/clients/#{params[:client]}/history"
-        pass_through response
-        after_get_clients_client_history response, load_response(response)
-      end
+      response = call_api {|http| http.get "/clients/#{params[:client]}/history"}
+      pass_through response
+      after_get_clients_client_history response, load_response(response)
     rescue
       500
     end

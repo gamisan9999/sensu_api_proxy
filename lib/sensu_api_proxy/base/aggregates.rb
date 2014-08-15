@@ -4,12 +4,10 @@
 class SensuAPIProxy::Base
   get "/aggregates" do
     begin
-      call_api do |http|
-        parameters = before_get_aggregates(params) || params
-        response   = http.get "/aggregates#{params_to_s parameters}"
-        pass_through response
-        after_get_aggregates response, load_response(response)
-      end
+      parameters = before_get_aggregates(params) || params
+      response   = call_api {|http| http.get "/aggregates#{params_to_s parameters}"}
+      pass_through response
+      after_get_aggregates response, load_response(response)
     rescue
       500
     end
@@ -23,12 +21,10 @@ class SensuAPIProxy::Base
 
   get "/aggregates/:check" do
     begin
-      call_api do |http|
-        parameters = before_get_aggregates_check(params) || params
-        response   = http.get "/aggregates/#{params[:check]}"
-        pass_through response
-        after_get_aggregates_check response, load_response(response)
-      end
+      parameters = before_get_aggregates_check(params) || params
+      response   = call_api {|http| http.get "/aggregates/#{params[:check]}"}
+      pass_through response
+      after_get_aggregates_check response, load_response(response)
     rescue
       500
     end
@@ -42,27 +38,23 @@ class SensuAPIProxy::Base
 
   delete "/aggregates/:check" do
     begin
-      call_api do |http|
-        response = http.delete "/aggregates/#{params[:check]}"
-        pass_through response
-        after_delete_aggregates_check response, load_response(response)
-      end
+      response = call_api {|http| http.delete "/aggregates/#{params[:check]}"}
+      pass_through response
+      after_delete_aggregates_check response
     rescue
       500
     end
   end
 
-  def after_delete_aggregates_check response, deletion
+  def after_delete_aggregates_check response
   end
 
   get "/aggregates/:check/:issued" do
     begin
-      call_api do |http|
-        parameters = before_get_aggregates_check_issued(params) || params
-        response   = http.get "/aggregates/#{params[:check]}/#{params[:issued]}#{params_to_s parameters}"
-        pass_through response
-        after_get_aggregates_check_issued response, load_response(response)
-      end
+      parameters = before_get_aggregates_check_issued(params) || params
+      response   = call_api {|http| http.get "/aggregates/#{params[:check]}/#{params[:issued]}#{params_to_s parameters}"}
+      pass_through response
+      after_get_aggregates_check_issued response, load_response(response)
     rescue
       500
     end

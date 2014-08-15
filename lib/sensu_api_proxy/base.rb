@@ -1,8 +1,8 @@
 # coding: utf-8
 
 require "sinatra/base"
-require "json"
 require "net/http"
+require "multi_json"
 
 class SensuAPIProxy::Base < Sinatra::Base
   configure :development do
@@ -27,17 +27,25 @@ class SensuAPIProxy::Base < Sinatra::Base
 
     def halt_if_not_ok response
       code = response.code.to_i
-      halt code unless (200..209).include? code
+
+      unless (200..209).include? code
+        pass_through response
+        halt
+      end
     end
 
     def load_response response
       halt_if_not_ok response
-      JSON.load response.body
+      MultiJson.load response.body
     end
 
     def params_to_s hash
       return "" if hash.empty?
       hash.inject("?") {|string, (key, value)| string + "#{key}=#{value}&"}.chop
+    end
+
+    def read_payload
+      env["rack.input"].read
     end
 
     def pass_through response
