@@ -1,6 +1,4 @@
-require "sensu_api_proxy/server/base"
-
-class SensuAPIProxy::Server::Base
+class SensuAPIProxy::Base
   get "/clients" do
     begin
       call_api do |http|
