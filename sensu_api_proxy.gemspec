@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["y13i"]
   spec.email         = ["email@y13i.com"]
   spec.summary       = %q{Sensu API proxy.}
-  spec.description   = %q{Proxy server for Sensu API. Can intercept returned values.}
+  spec.description   = %q{Proxy server for Sensu API. Can intercept API reseponses.}
   spec.homepage      = ""
   spec.license       = "MIT"
 
