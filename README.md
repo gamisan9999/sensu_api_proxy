@@ -23,6 +23,8 @@ Or install it yourself as:
 
 TODO: Write usage instructions here
 
+See `app.example.rb`.
+
 ## Contributing
 
 1. Fork it ( https://github.com/y13i/sensu_api_proxy/fork )
