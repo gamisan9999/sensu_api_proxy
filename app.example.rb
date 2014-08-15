@@ -4,9 +4,14 @@ class SensuAPIProxy::Example < SensuAPIProxy::Base
   ### example: filter clients by name ###
 
   def after_get_clients response, clients
-    clients.select {|client| client["name"].match /example/}
+    body clients.select {|client| client["name"].match /example/}.to_json
+  end
 
-    body clients.to_json
+  ### example: deny access to info API ###
+
+  def after_get_info response, info
+    status 403
+    body   "You shall not pass!"
   end
 
   ### all methods listed below ###
