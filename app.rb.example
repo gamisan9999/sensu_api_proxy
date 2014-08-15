@@ -1,8 +1,0 @@
-require "sensu_api_proxy"
-
-class SensuAPIProxy::Example < SensuAPIProxy::Base
-  # Returns clients with name start with "example", instead of all clients.
-  def intercept_clients clients
-    clients.select {|client| client["name"].start_with? "example"}
-  end
-end
