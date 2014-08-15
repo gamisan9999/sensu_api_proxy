@@ -1,6 +1,15 @@
 require "sensu_api_proxy"
 
 class SensuAPIProxy::Example < SensuAPIProxy::Base
+  ### example: filter clients by name ###
+
+  def after_get_clients response, clients
+    clients.select {|client| client["name"].match /example/}
+
+    body clients.to_json
+  end
+
+  ### all methods listed below ###
 
   # # Do something around Aggregates APIs
 
