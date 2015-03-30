@@ -66,9 +66,9 @@ class SensuAPIProxy::Base
   def after_post_stashes_path response
   end
 
-  delete "/stashs/:path" do
+  delete "/stashs/silence/:path" do
     begin
-      response = call_api {|http| http.delete "/stashs/#{params[:path]}"}
+      response = call_api {|http| http.delete "/stashs/silence/#{params[:path]}"}
       pass_through response
       after_delete_stashes_path response
     rescue
